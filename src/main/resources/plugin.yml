@@ -1,0 +1,18 @@
+name: HouseKeeping
+version: ${project.version}
+description: This plugin helps us to keep our minecraft server clean and safe.
+website: https://github.com/DmitryRendov/HouseKeeping
+author: DmitryRendov
+main: me.drendov.HouseKeeping.HouseKeeping
+api-version: 1.17
+
+commands:
+  housekeeping:
+    description: Check for given settings, enter /housekeeping reload to reload the config
+    usage: |
+      /housekeeping reload
+
+permissions:
+  housekeeping.reload:
+    description: Allows to reload the plugin config
+    default: false
