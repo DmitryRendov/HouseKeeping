@@ -6,6 +6,8 @@ author: DmitryRendov
 main: me.drendov.HouseKeeping.HouseKeeping
 api-version: 1.17
 
+depend: [Vault, Essentials]
+
 commands:
   housekeeping:
     description: Check for given settings, enter /housekeeping reload to reload the config
