@@ -47,6 +47,18 @@ public class HouseKeeping extends JavaPlugin {
         // register for events
         PluginManager pluginManager = this.getServer().getPluginManager();
 
+        if (pluginManager.getPlugin("Vault") == null) {
+            logger.info("Missing dependency 'Vault'. Cannot continue.");
+            getPluginLoader().disablePlugin(this);
+            return;
+        }
+
+        if (pluginManager.getPlugin("Essentials") == null) {
+            logger.info("Missing dependency 'EssentialsX'. Cannot continue.");
+            getPluginLoader().disablePlugin(this);
+            return;
+        }
+
         // player events
         pluginManager.registerEvents((Listener) new Listeners(), (Plugin) this);
         Objects.requireNonNull(this.getCommand("housekeeping")).setExecutor(new Cmd());

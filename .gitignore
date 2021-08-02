@@ -46,3 +46,8 @@ hs_err_pid*
 # IntelliJ
 /.idea
 HouseKeeping.iml
+
+# VSCode
+.vscode/*
+!.vscode/launch.json
+!.vscode/tasks.json
