@@ -2,9 +2,9 @@ name: HouseKeeping
 version: ${project.version}
 description: This plugin helps us to keep our minecraft server clean and safe.
 website: https://github.com/DmitryRendov/HouseKeeping
-author: DmitryRendov
+author: [DmitryRendov, AlexeyFilich]
 main: me.drendov.HouseKeeping.HouseKeeping
-api-version: 1.17
+api-version: 1.13
 
 depend: [Vault, Essentials]
 

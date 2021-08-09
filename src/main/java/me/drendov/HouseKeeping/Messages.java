@@ -4,5 +4,6 @@ public enum Messages
 {
     Reloaded,
     NoPermissionForCommand,
-    ReloadMsg
+    ReloadMsg,
+    DenyCommandMsg
 }
