@@ -31,7 +31,7 @@ public class Listeners
             HashMap getSafeZoneArea = HouseKeeping.getInstance().config.getSafeZoneArea(player);
             Location loc1 = (Location) getSafeZoneArea.get("loc1");
             Location loc2 = (Location) getSafeZoneArea.get("loc2");
-            if (this.isInRect(player, loc1, loc2)) {
+            if (! this.isInRect(player, loc1, loc2)) {
                 for (final String command : HouseKeeping.getInstance().config.getSafezoneBlockedCommands()) {
                     if (event.getMessage().toLowerCase().equals("/" + command) || event.getMessage().toLowerCase().startsWith("/" + command + " ")) {
                         event.setCancelled(true);
