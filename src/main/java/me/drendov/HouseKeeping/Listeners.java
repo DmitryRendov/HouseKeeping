@@ -23,6 +23,9 @@ public class Listeners
             player = event.getPlayer();
         }
 
+        if (!player.getWorld().getName().equals(HouseKeeping.getInstance().config.getSafezoneWorld()))
+            return;
+
         if (player.isOp() || player.hasPermission("housekeeping.bypass"))
             return;
 

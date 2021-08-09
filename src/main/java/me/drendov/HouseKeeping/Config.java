@@ -14,6 +14,7 @@ class Config {
     private FileConfiguration config;
     private static Integer daysWithholdFunds;
     public static List<String> safezoneBlockedCommands = new ArrayList<String>();
+    private static String safezoneWorld;
 
     Config(HouseKeeping plugin) {
         this.plugin = plugin;
@@ -25,6 +26,7 @@ class Config {
         this.config.addDefault("debug", "true");
         this.config.addDefault("daysWithholdFunds", 30);
         this.config.addDefault("safezone", "true");
+        this.config.addDefault("safezone.world", "survival");
         this.config.addDefault("safezone.x1", -100);
         this.config.addDefault("safezone.y1", -100);
         this.config.addDefault("safezone.x2", 100);
@@ -34,11 +36,17 @@ class Config {
         this.config.options().copyDefaults(true);
         this.plugin.saveConfig();
         daysWithholdFunds = this.config.getInt("daysWithholdFunds");
+        safezoneWorld = this.config.getString("safezone.world");
         safezoneBlockedCommands = this.config.getStringList("blockedCommands");
+
     }
 
     public int getDaysWithholdFunds() {
         return daysWithholdFunds;
+    }
+
+    public String getSafezoneWorld() {
+        return safezoneWorld;
     }
 
     public List<String> getSafezoneBlockedCommands() {
