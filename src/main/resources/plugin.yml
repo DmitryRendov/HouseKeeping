@@ -12,9 +12,12 @@ commands:
   housekeeping:
     description: Check for given settings, enter /housekeeping reload to reload the config
     usage: |
-      /housekeeping reload
+      Usage: /housekeeping reload
 
 permissions:
   housekeeping.reload:
     description: Allows to reload the plugin config
+    default: false
+  housekeeping.absent:
+    description: Allows to list absent players
     default: false

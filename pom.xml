@@ -4,7 +4,7 @@
 
     <groupId>me.drendov.HouseKeeping</groupId>
     <artifactId>HouseKeeping</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
     <packaging>jar</packaging>
     <name>HouseKeeping</name>
     <description>A plugin to keep our minecraft server clean and safe.</description>
