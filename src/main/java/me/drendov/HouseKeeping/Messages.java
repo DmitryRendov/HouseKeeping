@@ -5,5 +5,6 @@ public enum Messages
     Reloaded,
     NoPermissionForCommand,
     ReloadMsg,
-    DenyCommandMsg
+    DenyCommandMsg,
+    CantFlyHere
 }

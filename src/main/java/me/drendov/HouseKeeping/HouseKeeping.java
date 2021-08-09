@@ -135,7 +135,7 @@ public class HouseKeeping extends JavaPlugin {
         this.addDefault(defaults, Messages.ReloadMsg, "Reload the plugin config from the disc.", null);
         this.addDefault(defaults, Messages.NoPermissionForCommand, "You don't have permission to do that.", null);
         this.addDefault(defaults, Messages.DenyCommandMsg, "You are not allowed to run such command here.", null);
-
+        this.addDefault(defaults, Messages.CantFlyHere, "You can't fly here.", null);
 
         // load the config file
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));
