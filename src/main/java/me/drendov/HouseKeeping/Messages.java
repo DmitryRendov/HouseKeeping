@@ -7,5 +7,6 @@ public enum Messages
     ReloadMsg,
     AbsentMsg,
     DenyCommandMsg,
+    DenyNetherPortalMsg,
     CantFlyHere
 }

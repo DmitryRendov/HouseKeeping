@@ -4,10 +4,10 @@
 
     <groupId>me.drendov.HouseKeeping</groupId>
     <artifactId>HouseKeeping</artifactId>
-    <version>0.3.0</version>
+    <version>0.4.0</version>
     <packaging>jar</packaging>
     <name>HouseKeeping</name>
-    <description>A plugin to keep our minecraft server clean and safe.</description>
+    <description>A plugin to keep our Minecraft server clean and safe.</description>
     <url>https://github.com/DmitryRendov/HouseKeeping</url>
 
     <properties>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.17-R0.1-SNAPSHOT</version>
+            <version>1.17.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 

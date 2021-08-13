@@ -18,7 +18,7 @@ public class Cmd implements CommandExecutor {
         }
 
         if (cmd.getName().equalsIgnoreCase("housekeeping")) {
-            if (args.length == 0) {
+            if (args.length == 0  && sender.isOp()) {
                 plugin.showInfo(sender);
                 return true;
             }
@@ -36,6 +36,7 @@ public class Cmd implements CommandExecutor {
                     return true;
                 }
                 plugin.reloadConfig();
+                HouseKeeping.sendMessage(player, TextMode.Info, Messages.Reloaded);
                 return true;
             } else {
                 // Command not found

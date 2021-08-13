@@ -145,6 +145,7 @@ public class HouseKeeping extends JavaPlugin {
         this.addDefault(defaults, Messages.AbsentMsg, "List in console all players who are absent more than specified in config number of days.", null);
         this.addDefault(defaults, Messages.NoPermissionForCommand, "You don't have permission to do that.", null);
         this.addDefault(defaults, Messages.DenyCommandMsg, "You are not allowed to run such command here.", null);
+        this.addDefault(defaults, Messages.DenyNetherPortalMsg, "You are not allowed to create portals here.", null);
         this.addDefault(defaults, Messages.CantFlyHere, "You can't fly here.", null);
 
         // Load the config file
