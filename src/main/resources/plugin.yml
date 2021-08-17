@@ -10,14 +10,27 @@ depend: [Vault, Essentials]
 
 commands:
   housekeeping:
-    description: Check for given settings, enter /housekeeping reload to reload the config
+    description: Reload the config.
     usage: |
-      Usage: /housekeeping reload
+      /housekeeping reload
+  absent:
+    description: List players and their balance who are absent for more than days, specified in the config.
+    usage: |
+      /housekeeping absent
 
 permissions:
   housekeeping.reload:
     description: Allows to reload the plugin config
-    default: false
+    default: op
   housekeeping.absent:
     description: Allows to list absent players
-    default: false
+    default: op
+  housekeeping.bypass:
+    description: Makes a player immune to the limitations of all restrictions in Far Lands.
+    default: op
+  housekeeping.bypass.fly:
+    description: Allowe a player to fly in Far Lands in a survival mode.
+    default: op
+  housekeeping.bypass.portal:
+    description: Allows a player to ignite Nether portals in Far Lands.
+    default: op

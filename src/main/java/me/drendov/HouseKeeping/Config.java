@@ -1,6 +1,7 @@
 package me.drendov.HouseKeeping;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -14,7 +15,8 @@ class Config {
     private FileConfiguration config;
     private static Integer daysWithholdFunds;
     private static boolean listAbsentOnStart;
-    public static List<String> safezoneBlockedCommands = new ArrayList<String>();
+    private static boolean preventPortalCreation;
+    private static List<String> safezoneBlockedCommands = new ArrayList<String>();
     private static String safezoneWorld;
 
     Config(HouseKeeping plugin) {
@@ -25,15 +27,16 @@ class Config {
         this.plugin.reloadConfig();
         this.config = this.plugin.getConfig();
 
-        this.config.addDefault("debug", "true");
+        this.config.addDefault("debug", "false");
         this.config.addDefault("daysWithholdFunds", 30);
         this.config.addDefault("listAbsentOnStart", true);
         this.config.addDefault("safezone", "true");
-        this.config.addDefault("safezone.world", "survival");
-        this.config.addDefault("safezone.x1", -100);
-        this.config.addDefault("safezone.y1", -100);
-        this.config.addDefault("safezone.x2", 100);
-        this.config.addDefault("safezone.y2", 100);
+        this.config.addDefault("safezone.world", "world");
+        this.config.addDefault("safezone.prevent_portal_creation", true);
+        this.config.addDefault("safezone.x1", -1024);
+        this.config.addDefault("safezone.y1", -1024);
+        this.config.addDefault("safezone.x2", 1024);
+        this.config.addDefault("safezone.y2", 1024);
         List<String> blockedCommands = Arrays.asList("sethome", "home", "ehome", "homes", "ehomes", "tpa", "tphere", "tpyes", "call", "ecall", "etpa", "tpask", "etpask", "spawn", "warp", "warps", "ewarp", "warps", "ewarps");
         this.config.addDefault("blockedCommands", blockedCommands);
         this.config.options().copyDefaults(true);
@@ -42,29 +45,36 @@ class Config {
         daysWithholdFunds = this.config.getInt("daysWithholdFunds");
         listAbsentOnStart = this.config.getBoolean("listAbsentOnStart");
         safezoneWorld = this.config.getString("safezone.world");
+        preventPortalCreation = this.config.getBoolean("safezone.prevent_portal_creation");
         safezoneBlockedCommands = this.config.getStringList("blockedCommands");
     }
 
-    public int getDaysWithholdFunds() {
+    int getDaysWithholdFunds() {
         return daysWithholdFunds;
     }
 
-    public boolean getListAbsentOnStart() {
+    boolean getListAbsentOnStart() {
         return listAbsentOnStart;
     }
 
-    public String getSafezoneWorld() {
+    boolean getRulePreventPortalCreation() {
+        return preventPortalCreation;
+    }
+
+    String getSafezoneWorld() {
         return safezoneWorld;
     }
 
-    public List<String> getSafezoneBlockedCommands() {
+    List<String> getSafezoneBlockedCommands() {
         return safezoneBlockedCommands;
     }
 
-    public HashMap<String, Location> getSafeZoneArea(Player player) {
+    HashMap<String, Location> getSafeZoneArea(Player player) {
         HashMap<String, Location> safeZoneArea = new HashMap<>();
-        safeZoneArea.put("loc1", new Location(player.getWorld(), this.config.getDouble("safezone.x1"), 0.0, this.config.getDouble("safezone.y1" )));
-        safeZoneArea.put("loc2", new Location(player.getWorld(), this.config.getDouble("safezone.x2"), 255.0, this.config.getDouble("safezone.y2")));
+        double worldXZFactor = player.getWorld().getEnvironment().equals(World.Environment.NETHER) ? 8.0 : 1.0;
+        double worldYFactor = player.getWorld().getEnvironment().equals(World.Environment.NETHER) ? 2.0 : 1.0;
+        safeZoneArea.put("loc1", new Location(player.getWorld(), this.config.getDouble("safezone.x1") / worldXZFactor, 0.0, this.config.getDouble("safezone.y1") / worldXZFactor));
+        safeZoneArea.put("loc2", new Location(player.getWorld(), this.config.getDouble("safezone.x2") / worldXZFactor, 255.0 / worldYFactor, this.config.getDouble("safezone.y2") / worldXZFactor));
         return safeZoneArea;
     }
 }

@@ -3,14 +3,20 @@ package me.drendov.HouseKeeping;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Logger;
+
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
+import org.bukkit.event.world.PortalCreateEvent;
 
 public class Listeners
         implements Listener {
@@ -20,10 +26,7 @@ public class Listeners
     @EventHandler
     public void onPlayerCommandPreProcess(final PlayerCommandPreprocessEvent event) {
 
-        Player player = null;
-        if (event.getPlayer() instanceof Player) {
-            player = event.getPlayer();
-        }
+        Player player = event.getPlayer();
 
         if (!player.getWorld().getName().equals(HouseKeeping.getInstance().config.getSafezoneWorld()))
             return;
@@ -36,7 +39,7 @@ public class Listeners
             HashMap getSafeZoneArea = HouseKeeping.getInstance().config.getSafeZoneArea(player);
             Location loc1 = (Location) getSafeZoneArea.get("loc1");
             Location loc2 = (Location) getSafeZoneArea.get("loc2");
-            if (! this.isInRect(player, loc1, loc2)) {
+            if (!this.isInRect(player, loc1, loc2)) {
                 for (final String command : HouseKeeping.getInstance().config.getSafezoneBlockedCommands()) {
                     if (event.getMessage().toLowerCase().equals("/" + command) || event.getMessage().toLowerCase().startsWith("/" + command + " ")) {
                         event.setCancelled(true);
@@ -56,14 +59,15 @@ public class Listeners
 
         if (!player.isFlying()) return;
         if (!player.getWorld().getName().equals(HouseKeeping.getInstance().config.getSafezoneWorld())) return;
-        if (player.isOp() || player.hasPermission("housekeeping.bypass") || player.hasPermission("housekeeping.bypass.fly")) return;
+        if (player.isOp() || player.hasPermission("housekeeping.bypass") || player.hasPermission("housekeeping.bypass.fly"))
+            return;
 
         GameMode mode = player.getGameMode();
         if (mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR) {
             HashMap getSafeZoneArea = HouseKeeping.getInstance().config.getSafeZoneArea(player);
             Location loc1 = (Location) getSafeZoneArea.get("loc1");
             Location loc2 = (Location) getSafeZoneArea.get("loc2");
-            if (! this.isInRect(player, loc1, loc2)) {
+            if (!this.isInRect(player, loc1, loc2)) {
                 player.setFlying(false);
                 HouseKeeping.sendMessage(player, TextMode.Err, Messages.CantFlyHere);
             }
@@ -75,14 +79,15 @@ public class Listeners
         Player player = event.getPlayer();
         if (!player.isFlying()) return;
         if (!player.getWorld().getName().equals(HouseKeeping.getInstance().config.getSafezoneWorld())) return;
-        if (player.isOp() || player.hasPermission("housekeeping.bypass") || player.hasPermission("housekeeping.bypass.fly")) return;
+        if (player.isOp() || player.hasPermission("housekeeping.bypass") || player.hasPermission("housekeeping.bypass.fly"))
+            return;
 
         GameMode mode = player.getGameMode();
         if (mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR) {
             HashMap getSafeZoneArea = HouseKeeping.getInstance().config.getSafeZoneArea(player);
             Location loc1 = (Location) getSafeZoneArea.get("loc1");
             Location loc2 = (Location) getSafeZoneArea.get("loc2");
-            if (! this.isInRect(player, loc1, loc2)) {
+            if (!this.isInRect(player, loc1, loc2)) {
                 HouseKeeping.sendMessage(player, TextMode.Err, Messages.CantFlyHere);
                 event.setCancelled(true);
                 player.setAllowFlight(false);
@@ -90,7 +95,35 @@ public class Listeners
         }
     }
 
-    public boolean isInRect(Player player, Location loc1, Location loc2) {
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPortalLight(final PortalCreateEvent event) {
+
+        Player player = null;
+        if (event.getEntity() instanceof Player) {
+            player = (Player) event.getEntity();
+        }
+        if (player == null) {
+            event.setCancelled(true);
+            return;
+        }
+        if (player.isOp() || player.hasPermission("housekeeping.bypass") || player.hasPermission("housekeeping.bypass.portal"))
+            return;
+
+        HashMap getSafeZoneArea = HouseKeeping.getInstance().config.getSafeZoneArea(player);
+        Location loc1 = (Location) getSafeZoneArea.get("loc1");
+        Location loc2 = (Location) getSafeZoneArea.get("loc2");
+        if (this.isInRect(player, loc1, loc2)) {
+            if (event.getReason() == PortalCreateEvent.CreateReason.FIRE) {
+                if (HouseKeeping.getInstance().config.getRulePreventPortalCreation()) {
+                    HouseKeeping.sendMessage(player, TextMode.Err, Messages.DenyNetherPortalMsg);
+                }
+                event.setCancelled(HouseKeeping.getInstance().config.getRulePreventPortalCreation());
+            }
+        }
+    }
+
+
+    private boolean isInRect(Player player, Location loc1, Location loc2) {
         double[] dim = new double[2];
 
         dim[0] = loc1.getX();
@@ -102,10 +135,7 @@ public class Listeners
         dim[0] = loc1.getZ();
         dim[1] = loc2.getZ();
         Arrays.sort(dim);
-        if (player.getLocation().getZ() > dim[1] || player.getLocation().getZ() < dim[0])
-            return false;
-
-        return true;
+        return !(player.getLocation().getZ() > dim[1]) && !(player.getLocation().getZ() < dim[0]);
     }
 }
 
