@@ -28,9 +28,6 @@ public class Listeners
 
         Player player = event.getPlayer();
 
-        if (!player.getWorld().getName().equals(HouseKeeping.getInstance().config.getSafezoneWorld()))
-            return;
-
         if (player.isOp() || player.hasPermission("housekeeping.bypass"))
             return;
 
@@ -40,7 +37,7 @@ public class Listeners
             Location loc1 = (Location) getSafeZoneArea.get("loc1");
             Location loc2 = (Location) getSafeZoneArea.get("loc2");
             if (!this.isInRect(player, loc1, loc2)) {
-                for (final String command : HouseKeeping.getInstance().config.getSafezoneBlockedCommands()) {
+                for (final String command : HouseKeeping.getInstance().config.getSafezoneBlockedCommands(player.getWorld().getName())) {
                     if (event.getMessage().toLowerCase().equals("/" + command) || event.getMessage().toLowerCase().startsWith("/" + command + " ")) {
                         event.setCancelled(true);
                         HouseKeeping.sendMessage(player, TextMode.Err, Messages.DenyCommandMsg);

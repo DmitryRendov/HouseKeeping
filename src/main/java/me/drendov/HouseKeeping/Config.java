@@ -1,5 +1,6 @@
 package me.drendov.HouseKeeping;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,7 +17,6 @@ class Config {
     private static Integer daysWithholdFunds;
     private static boolean listAbsentOnStart;
     private static boolean preventPortalCreation;
-    private static List<String> safezoneBlockedCommands = new ArrayList<String>();
     private static String safezoneWorld;
 
     Config(HouseKeeping plugin) {
@@ -26,7 +26,6 @@ class Config {
     void load() {
         this.plugin.reloadConfig();
         this.config = this.plugin.getConfig();
-
         this.config.addDefault("debug", "false");
         this.config.addDefault("daysWithholdFunds", 30);
         this.config.addDefault("listAbsentOnStart", true);
@@ -37,8 +36,7 @@ class Config {
         this.config.addDefault("safezone.y1", -1024);
         this.config.addDefault("safezone.x2", 1024);
         this.config.addDefault("safezone.y2", 1024);
-        List<String> blockedCommands = Arrays.asList("sethome", "home", "ehome", "homes", "ehomes", "tpa", "tphere", "tpyes", "call", "ecall", "etpa", "tpask", "etpask", "spawn", "warp", "warps", "ewarp", "warps", "ewarps");
-        this.config.addDefault("blockedCommands", blockedCommands);
+        initiateBlockedCommandsPerWorld();
         this.config.options().copyDefaults(true);
         this.plugin.saveConfig();
 
@@ -46,7 +44,13 @@ class Config {
         listAbsentOnStart = this.config.getBoolean("listAbsentOnStart");
         safezoneWorld = this.config.getString("safezone.world");
         preventPortalCreation = this.config.getBoolean("safezone.prevent_portal_creation");
-        safezoneBlockedCommands = this.config.getStringList("blockedCommands");
+    }
+
+    private void initiateBlockedCommandsPerWorld() {
+        List<String> defaultBlockedCommands = Arrays.asList("sethome", "home", "ehome", "homes", "ehomes", "tpa", "tphere", "tpyes", "call", "ecall", "etpa", "tpask", "etpask", "spawn", "warp", "warps", "ewarp", "warps", "ewarps");
+        for (World world : Bukkit.getWorlds()) {
+            this.config.addDefault(world.getName(), defaultBlockedCommands);
+        }
     }
 
     int getDaysWithholdFunds() {
@@ -65,7 +69,12 @@ class Config {
         return safezoneWorld;
     }
 
-    List<String> getSafezoneBlockedCommands() {
+    List<String> getSafezoneBlockedCommands(String worldName) {
+        String pathBlockedCommnandsInWorld = "";
+        List<String> safezoneBlockedCommands = new ArrayList<>();
+        if (plugin.checkWorld(worldName))
+            pathBlockedCommnandsInWorld = "safezone.blockedCommands.".concat(worldName);
+        safezoneBlockedCommands = this.config.getStringList(pathBlockedCommnandsInWorld);
         return safezoneBlockedCommands;
     }
 
