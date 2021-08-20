@@ -27,10 +27,9 @@ class Config {
         this.plugin.reloadConfig();
         this.config = this.plugin.getConfig();
 
-        this.config.addDefault("debug", "false");
+        this.config.addDefault("debug", false);
         this.config.addDefault("daysWithholdFunds", 30);
         this.config.addDefault("listAbsentOnStart", true);
-        this.config.addDefault("safezone", "true");
         this.config.addDefault("safezone.world", "world");
         this.config.addDefault("safezone.prevent_portal_creation", true);
         this.config.addDefault("safezone.x1", -1024);
