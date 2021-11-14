@@ -28,10 +28,10 @@ public class Listeners
 
         Player player = event.getPlayer();
 
-        if (!player.getWorld().getName().equals(HouseKeeping.getInstance().config.getSafezoneWorld()))
+        if (player.isOp() || player.hasPermission("housekeeping.bypass"))
             return;
 
-        if (player.isOp() || player.hasPermission("housekeeping.bypass"))
+        if (HouseKeeping.getInstance().config.isIgnoredWorld(player.getWorld().getName()))
             return;
 
         GameMode mode = player.getGameMode();
