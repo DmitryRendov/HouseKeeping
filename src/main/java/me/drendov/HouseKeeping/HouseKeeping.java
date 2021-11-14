@@ -211,10 +211,6 @@ public class HouseKeeping extends JavaPlugin {
         }
     }
 
-    public boolean checkWorld(String world) {
-        return this.getServer().getWorld(world) != null;
-    }
-
     public static void checkAbsence() {
         Essentials ess = (Essentials)Bukkit.getPluginManager().getPlugin("Essentials");
         UserMap userMap = ess.getUserMap();
