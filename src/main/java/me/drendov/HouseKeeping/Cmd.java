@@ -14,12 +14,14 @@ public class Cmd implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = null;
         if (sender instanceof Player) {
-            player = (Player)sender;
+            player = (Player) sender;
         }
 
         if (cmd.getName().equalsIgnoreCase("housekeeping")) {
-            if (args.length == 0  && sender.isOp()) {
-                plugin.showInfo(sender);
+
+            if (args.length == 0) {
+                if (sender.isOp() || sender.hasPermission("housekeeping.admin"))
+                    plugin.showInfo(sender);
                 return true;
             }
 
