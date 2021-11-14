@@ -34,7 +34,7 @@ class Config {
         this.config.addDefault("safezone.y1", -1024);
         this.config.addDefault("safezone.x2", 1024);
         this.config.addDefault("safezone.y2", 1024);
-        List<String> defaultBlockedCommands = Arrays.asList("sethome", "home", "spawn");
+        List<String> defaultBlockedCommands = Arrays.asList("sethome", "home", "ehome", "homes", "ehomes", "tpa", "tphere", "tpyes", "call", "ecall", "etpa", "tpask", "etpask", "spawn", "warp", "warps", "ewarp", "warps", "ewarps");
         this.config.addDefault("blockedCommands", defaultBlockedCommands);
         this.initiateIgnoreWorlds();
         this.config.options().copyDefaults(true);
