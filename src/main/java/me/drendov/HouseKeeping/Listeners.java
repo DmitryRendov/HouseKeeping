@@ -31,13 +31,16 @@ public class Listeners
         if (player.isOp() || player.hasPermission("housekeeping.bypass"))
             return;
 
+        if (HouseKeeping.getInstance().config.isIgnoredWorld(player.getWorld().getName()))
+            return;
+
         GameMode mode = player.getGameMode();
         if (mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR) {
             HashMap getSafeZoneArea = HouseKeeping.getInstance().config.getSafeZoneArea(player);
             Location loc1 = (Location) getSafeZoneArea.get("loc1");
             Location loc2 = (Location) getSafeZoneArea.get("loc2");
             if (!this.isInRect(player, loc1, loc2)) {
-                for (final String command : HouseKeeping.getInstance().config.getSafezoneBlockedCommands(player.getWorld().getName())) {
+                for (final String command : HouseKeeping.getInstance().config.getSafezoneBlockedCommands()) {
                     if (event.getMessage().toLowerCase().equals("/" + command) || event.getMessage().toLowerCase().startsWith("/" + command + " ")) {
                         event.setCancelled(true);
                         HouseKeeping.sendMessage(player, TextMode.Err, Messages.DenyCommandMsg);
